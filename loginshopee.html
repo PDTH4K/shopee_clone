@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopee</title>
+    <link rel="icon" href="./assets/img/logo/shopee-logo.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'shopee-orange': '#EE4D2D',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-shopee-orange flex items-center justify-center min-h-screen">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+            <div class="flex items-center space-x-2">
+                <img src="./assets/img/logo/shopee-logo.png" alt="Shopee Logo" class="h-8">
+                <h2 class="text-lg font-bold">Đăng nhập</h2>
+            </div>
+            <a href="#" class="text-sm text-red-500 hover:underline">Bạn cần giúp đỡ?</a>
+        </div>
+
+        <!-- Login Form -->
+        <form class="space-y-4">
+            <div>
+                <input type="text" placeholder="Email/Số điện thoại/Tên đăng nhập"
+                    class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-shopee-orange">
+            </div>
+            <div class="relative">
+                <input type="password" placeholder="Mật khẩu"
+                    class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-shopee-orange">
+                <span class="show-btn"><i class="fas fa-eye"></i></span>
+            </div>
+            <button type="submit" class="w-full bg-shopee-orange text-white p-2 rounded-md hover:bg-orange-600">ĐĂNG
+                NHẬP</button>
+            <a href="#" class="block text-center text-blue-500 text-sm hover:underline">Quên mật khẩu?</a>
+        </form>
+
+        <!-- Social Login -->
+        <div class="mt-4 text-center space-y-2">
+            <p class="text-gray-500">Hoặc đăng nhập bằng</p>
+            <div class="flex justify-between">
+                <button class="flex-1 bg-blue-600 text-white p-2 rounded-md mr-1">Facebook</button>
+                <button class="flex-1 bg-red-500 text-white p-2 rounded-md ml-1">Google</button>
+
+            </div>
+        </div>
+
+        <!-- Signup Link -->
+        <p class="mt-4 text-center text-sm">
+            Bạn mới biết đến Shopee? <a href="#" class="text-blue-500 hover:underline">Đăng ký</a>
+        </p>
+    </div>
+
+    <!-- Signup Modal (Simple Toggle) -->
+    <div id="signup-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center space-x-2">
+                    <img src="./assets/img/logo/shopee-logo.png" alt="Shopee Logo" class="h-8">
+                    <h2 class="text-lg font-bold">Đăng ký</h2>
+                </div>
+                <button id="close-modal" class="text-gray-500">&times;</button>
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <input type="text" placeholder="Số điện thoại"
+                        class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-shopee-orange">
+                </div>
+                <button type="submit" class="w-full bg-shopee-orange text-white p-2 rounded-md hover:bg-orange-600">TIẾP
+                    THEO</button>
+            </form>
+            <div class="mt-4 text-center space-y-2">
+                <p class="text-gray-500">Hoặc đăng ký bằng</p>
+                <div class="flex justify-between">
+                    <button class="flex-1 bg-blue-600 text-white p-2 rounded-md mr-1">Facebook</button>
+                    <button class="flex-1 bg-red-500 text-white p-2 rounded-md ml-1">Google</button>
+                </div>
+            </div>
+            <p class="mt-4 text-center text-sm">
+                Bạn đã có tài khoản? <a href="#" class="text-blue-500 hover:underline">Đăng nhập</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Toggle between Login and Signup
+        document.querySelectorAll('a[href="#"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const signupModal = document.getElementById('signup-modal');
+                signupModal.classList.toggle('hidden');
+            });
+        });
+
+        document.getElementById('close-modal').addEventListener('click', () => {
+            document.getElementById('signup-modal').classList.add('hidden');
+        });
+    </script>
+</body>
+
+</html>
+<script type="text/javascript">
+    var gk_isXlsx = false;
+    var gk_xlsxFileLookup = {};
+    var gk_fileData = {};
+    function filledCell(cell) {
+        return cell !== '' && cell != null;
+    }
+    function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                    row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                    headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+    }
+</script>
